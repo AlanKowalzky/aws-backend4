@@ -12,4 +12,7 @@ cp -r lib/*.js dist/
 cp -r src/lambdas/*.js dist/lambdas/
 cp -r src/mocks/*.js dist/mocks/
 
+# Copy mocks into lambdas directory for deployment
+cp -r dist/mocks/*.js dist/lambdas/
+
 echo "Build completed successfully!"

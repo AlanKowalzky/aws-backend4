@@ -1,6 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { productsList } from '../mocks/products';
-
+import { productsList } from './products';
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   console.log('getProductsList lambda invoked with event:', JSON.stringify(event, null, 2));
   
