@@ -2,24 +2,24 @@ import { DynamoDB } from 'aws-sdk';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-// Odczytujemy nazwy tabel z zmiennych środowiskowych
+// Read table names from environment variables
 const PRODUCTS_TABLE = process.env.PRODUCTS_TABLE!;
 const STOCKS_TABLE = process.env.STOCKS_TABLE!;
 
-// Funkcja, która zwróci listę produktów
+// Function that returns list of products
 export const handler = async () => {
   try {
-    // Pobieranie danych z tabeli Products
+    // Get data from Products table
     const products = await dynamoDb
       .scan({ TableName: PRODUCTS_TABLE })
       .promise();
     
-    // Pobieranie danych z tabeli Stocks
+    // Get data from Stocks table
     const stocks = await dynamoDb
       .scan({ TableName: STOCKS_TABLE })
       .promise();
     
-    // Można teraz połączyć produkty i stany magazynowe
+    // Now combine products and stock information
     const productsWithStock = products.Items?.map((product: any) => {
       const stock = stocks.Items?.find((s: any) => s.product_id === product.id);
       return {

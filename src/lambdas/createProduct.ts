@@ -8,22 +8,26 @@ const STOCKS_TABLE = process.env.STOCKS_TABLE!;
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
-    // Parsowanie body z JSON
+    // Parse body from JSON
     const requestBody = JSON.parse(event.body || "{}");
 
-    // Walidacja wejściowych danych
+    // Validate input data
     const { title, description, price, count } = requestBody;
     if (!title || !price || count === undefined || count < 0) {
       return {
         statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body: JSON.stringify({ message: "Invalid product data" }),
       };
     }
 
-    // Generowanie unikalnego ID dla nowego produktu
+    // Generate unique ID for the new product
     const productId = uuidv4();
 
-    // Tworzenie rekordu produktu
+    // Create product record
     const product = {
       id: productId,
       title,
@@ -31,13 +35,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       price: Number(price),
     };
 
-    // Tworzenie rekordu stocku
+    // Create stock record
     const stock = {
       product_id: productId,
       count: Number(count),
     };
 
-    // Transakcyjna operacja zapisu w DynamoDB
+    // Transaction write operation to DynamoDB
     await dynamoDB
       .transactWrite({
         TransactItems: [
@@ -57,15 +61,23 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       })
       .promise();
 
-    // Zwrot nowo utworzonego produktu jako odpowiedź
+    // Return the newly created product as response
     return {
       statusCode: 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({ ...product, count }),
     };
   } catch (error) {
     console.error("Error creating product:", error);
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({ message: "Internal Server Error" }),
     };
   }
