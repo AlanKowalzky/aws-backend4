@@ -1,0 +1,27 @@
+{
+    "products": [
+      {
+        "id": "b1f6b8d5-4cd7-43a8-a3fd-1a1b6e0dff18",
+        "title": "Smartphone X",
+        "description": "High-end smartphone",
+        "price": 999
+      },
+      {
+        "id": "c2a6b7d4-5ed8-48b2-bcfd-2a3b6f1def19",
+        "title": "Laptop Pro",
+        "description": "Powerful laptop",
+        "price": 1999
+      }
+    ],
+    "stocks": [
+      {
+        "product_id": "b1f6b8d5-4cd7-43a8-a3fd-1a1b6e0dff18",
+        "count": 10
+      },
+      {
+        "product_id": "c2a6b7d4-5ed8-48b2-bcfd-2a3b6f1def19",
+        "count": 5
+      }
+    ]
+  }
+  

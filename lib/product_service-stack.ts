@@ -40,6 +40,20 @@ export class ProductServiceStack extends cdk.Stack {
     const product = products.addResource('{productId}');
     product.addMethod('GET', new apigateway.LambdaIntegration(getProductsByIdLambda));
 
+    // Define createProduct Lambda function
+    const createProductLambda = new lambda.Function(this, 'CreateProductFunction', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'createProduct.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../dist/lambdas')),
+      environment: {
+        PRODUCTS_TABLE: 'products', // Add your actual table name here
+        STOCKS_TABLE: 'stocks',     // Add your actual table name here
+      },
+    });
+    
+    // Add POST method to products resource
+    products.addMethod('POST', new apigateway.LambdaIntegration(createProductLambda));
+
     // Output the API URL
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: api.url,
